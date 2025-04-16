@@ -54,7 +54,8 @@ public class MemberController {
 	}
 	
 	@PostMapping("/callSendMail")
-	public void sendMailCode(String tmpMemberEmail, HttpSession session) {
+	@ResponseBody
+	public String sendMailCode(String tmpMemberEmail, HttpSession session) {
 		
 		log.info("tmpMemberEmail : {}" , tmpMemberEmail);
 		
@@ -73,6 +74,8 @@ public class MemberController {
 			e.printStackTrace();
 			result = "fail";
 		}
+		
+		return result;
 	}
 	
 	@PostMapping("/signup")

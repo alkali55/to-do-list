@@ -92,6 +92,7 @@
 				alert("이메일로 인증번호를 발송했습니다. 인증코드를 입력해주세요.")
 				
 				if($(".authenticationDiv").length == 0){
+					$("#sendEmail").css("display", "none");
 					showAuthenticateDiv(); // 인증번호를 입력받을 태그 요소를 출력
 				} else {
 	        		//   $("#timeValid").val("checked");
@@ -106,6 +107,27 @@
 			complete: function () {
 			},
 		});
+	}
+
+	function showAuthenticateDiv(){
+	
+		let authDiv = `
+			<div class="authenticationDiv mt-2">
+				<input type="text" class="form-control" id="memberAuthCode" placeholder="인증번호를 입력하세요.." />
+				<div class="d-flex align-items-center">
+				<span class="timer">3:00</span>
+				</div>
+				<button type="button" id="authBtn" class="btn btn-info" onclick="checkAuthCode();">인증하기</button>
+			</div>`;
+				// <div id="timer" style="color: red;"></div><input type="hidden" id="timeValid" value="checked"/>
+		
+		$(authDiv).insertAfter("#email");
+		// startTimer();
+		
+		
+		
+	// 	doTimer();
+		
 	}
 
 	function checkEmail(){
@@ -187,6 +209,8 @@
 	.check-btn {
 		margin-top: 10px;
 	}
+
+	.timer {color : red }
 </style>
 <body>
 	<jsp:include page="../header.jsp"></jsp:include>
