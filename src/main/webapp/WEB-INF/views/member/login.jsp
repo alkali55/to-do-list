@@ -13,7 +13,7 @@
 		if(getParameter("signup") == "success"){
 			alert("회원가입 성공!");
 		}
-		
+
 		if(getParameter("login") == "fail"){
 			alert("아이디나 비밀번호가 다릅니다");
 		}
@@ -51,14 +51,14 @@
 			<form action="login" method="POST">
 			    <div class="mb-3 mt-3">
 			      <label for="memberId">아이디:</label>
-			      <input type="text" class="form-control" id="memberId" placeholder="아이디를 입력하세요..." name="memberId">
+			      <input type="text" class="form-control" id="memberId" placeholder="아이디를 입력하세요" name="memberId">
 			    </div>
 			    <div class="mb-3">
 			      <label for="memberPwd">비밀번호:</label>
-			      <input type="password" class="form-control" id="memberPwd" placeholder="비밀번호를 입력하세요..." name="memberPwd">
+			      <input type="password" class="form-control" id="memberPwd" placeholder="비밀번호를 입력하세요" name="memberPwd">
 			    </div>
 			    <button type="submit" class="btn btn-primary">로그인</button>
-			    <button type="submit" class="btn btn-secondary">취소</button>
+			    <button type="reset" class="btn btn-secondary">취소</button>
 			  </form>
 		</div>
 	</div>
