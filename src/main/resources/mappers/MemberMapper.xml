@@ -10,4 +10,12 @@
   	<select id="idDupCheck" resultType="int">
   		select count(*) from jis_member where memberId = #{tmpMemberId}
   	</select>
+  	
+  	<insert id="insertMember">
+  		insert into jis_member values(#{memberId}, sha1(md5(#{memberPwd})), #{email}, #{memberName})
+  	</insert>
+  	
+  	<select id="loginMember" resultType="memberVO">
+  		select memberId, email, memberName from jis_member where memberId = #{memberId} and memberPwd = sha1(md5(#{memberPwd}))
+  	</select>
 </mapper>

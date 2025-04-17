@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.todolist.domain.LoginDTO;
+import com.todolist.domain.MemberDTO;
+import com.todolist.domain.MemberVO;
 import com.todolist.service.member.MemberService;
 import com.todolist.util.SendMailService;
 
@@ -78,8 +81,80 @@ public class MemberController {
 		return result;
 	}
 	
+	@PostMapping("/checkAuthCode")
+	@ResponseBody
+	public String checkAuthCode(String memberAuthCode ,HttpSession session) {
+		
+		String result = "false";
+		
+		String authCode = (String)session.getAttribute("authCode");
+		
+		if(authCode.equals(memberAuthCode)) {
+			result = "true";
+		}
+		
+		return result;
+	}
+	
+	@PostMapping("/clearAuthCode")
+	@ResponseBody
+	public String clearAuthCode(HttpSession session) {
+		
+		if(session.getAttribute("authCode") != null) {
+			
+			session.removeAttribute("authCode");			
+		}
+		
+		return "success";
+	}
+	
 	@PostMapping("/signup")
-	public void tmppp() {
-		log.info("tmpp");
+	public String singupPost(MemberDTO memberDTO) {
+		String result = "";
+		
+		log.info("memberDTO : {}", memberDTO);
+		
+		
+		if(memberService.insertMember(memberDTO)) {
+			result = "redirect:/member/login?signup=success";
+		} else {
+			result = "redirect:/member/signup";
+		}
+		
+		return result;
+	}
+	
+	@GetMapping("/login")
+	public String loginGet() {
+		return "/member/login";
+	}
+	
+	@PostMapping("/login")
+	public String loginPost(LoginDTO loginDTO, HttpSession session) {
+		String result = "";
+		MemberVO loginMember = memberService.loginMember(loginDTO);
+		
+		log.info("memberVO : {}", loginMember);
+		
+		if (loginMember != null) {
+			session.setAttribute("loginMember", loginMember);
+			result = "redirect:/";
+		} else {
+			result = "redirect:/member/login?login=fail";
+		}
+		
+		return result;
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginMember");
+		
+		return "redirect:/";
+	}
+	
+	@GetMapping("/mypage")
+	public void myPage() {
+		
 	}
 }

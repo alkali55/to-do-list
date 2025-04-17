@@ -7,14 +7,13 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
-	<jsp:include page="${contextPath }header.jsp"></jsp:include>
+	<jsp:include page="header.jsp"></jsp:include>
 	<div class="container mt-5">
 		<div class="row">
 	
 			<h1>index.jsp</h1>
 		</div>
 	</div>
-	<jsp:include page="${contextPath }footer.jsp"></jsp:include>
+	<jsp:include page="footer.jsp"></jsp:include>
 </body>
 </html>

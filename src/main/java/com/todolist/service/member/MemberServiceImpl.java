@@ -2,12 +2,17 @@ package com.todolist.service.member;
 
 import org.springframework.stereotype.Service;
 
+import com.todolist.domain.LoginDTO;
+import com.todolist.domain.MemberDTO;
+import com.todolist.domain.MemberVO;
 import com.todolist.mapper.MemberMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberMapper memberMapper;
@@ -25,6 +30,25 @@ public class MemberServiceImpl implements MemberService {
 		}
 		
 		return result;
+	}
+
+
+	@Override
+	public boolean insertMember(MemberDTO memberDTO) {
+		boolean result = false;
+		
+		if(memberMapper.insertMember(memberDTO) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public MemberVO loginMember(LoginDTO loginDTO) {
+		
+		return memberMapper.loginMember(loginDTO);
 	}
 
 }
