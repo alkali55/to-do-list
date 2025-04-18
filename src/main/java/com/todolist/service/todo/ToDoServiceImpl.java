@@ -1,8 +1,11 @@
 package com.todolist.service.todo;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.todolist.domain.ToDoDTO;
+import com.todolist.domain.ToDoVO;
 import com.todolist.mapper.ToDoMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,13 @@ public class ToDoServiceImpl implements ToDoService {
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<ToDoVO> selectMyToDo(String memberId) {
+
+		
+		return toDoMapper.selectMyToDo(memberId);
 	}
 
 }

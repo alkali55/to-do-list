@@ -1,6 +1,6 @@
 package com.todolist.domain;
 
-import java.time.LocalDate;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,11 +13,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ToDoDTO {
+public class ToDoVO {
 	
 	private int tno;
 	private String toDo;
-	private LocalDate dueDate;
+	private String dueDate;
 	private String writer;
 	private boolean finished;
 }

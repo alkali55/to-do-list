@@ -6,4 +6,8 @@
 	<insert id="insertToDo">
 		insert into jis_todolist(toDo, dueDate, writer) values(#{toDo}, #{dueDate}, #{writer})
 	</insert>
+	
+	<select id="selectMyToDo" resultType="ToDoVO">
+		select * from jis_todolist where writer = #{memberId} order by tno desc
+	</select>
 </mapper>

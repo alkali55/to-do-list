@@ -1,6 +1,7 @@
 package com.todolist.controller.todo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.todolist.domain.MemberVO;
 import com.todolist.domain.ToDoDTO;
+import com.todolist.domain.ToDoVO;
 import com.todolist.service.todo.ToDoService;
 
 import lombok.RequiredArgsConstructor;
@@ -63,15 +66,31 @@ public class ToDoController {
 		return "redirect:/";
 	}
 	
-	@PostMapping("/list")
+	@GetMapping("/list")
 	public String toDoListGet(HttpSession session) {
-		
 
 		if(session.getAttribute("loginMember") == null) {
 			return "redirect:/";
 		}
 		
 		return "/toDo/list";
+	}
+	
+	@PostMapping("/list")
+	@ResponseBody
+	public List<ToDoVO> toDoListPost(HttpSession session) {
+		
+		
+		String memberId = ((MemberVO)session.getAttribute("loginMember")).getMemberId();
+		
+		List<ToDoVO> list = toDoService.selectMyToDo(memberId);
+		
+		for(ToDoVO toDo : list) {
+			log.info("toDo : {}", toDo);
+		}
+		
+		
+		return list;
 	}
 	
 }
