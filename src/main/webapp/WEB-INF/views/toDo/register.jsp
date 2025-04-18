@@ -58,7 +58,7 @@
 			    </div>
 			    <div class="mb-3">
 			      <label for="dueDate">마감일 :</label>
-			      <input type="date" class="form-control" id="dueDate" name="dueDate">
+			      <input type="date" class="form-control" id="dueDate" name="dueDateStr">
 			    </div>
 			    <button type="submit" class="btn btn-primary" onclick="return isValid();">등록</button>
 			    <button type="reset" class="btn btn-secondary">취소</button>
