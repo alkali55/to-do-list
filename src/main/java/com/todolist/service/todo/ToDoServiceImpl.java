@@ -20,7 +20,7 @@ public class ToDoServiceImpl implements ToDoService {
 	
 	@Override
 	public boolean insertToDo(ToDoDTO toDoDto) {
-		log.info("확인");
+//		log.info("확인");
 		
 		boolean result = false;
 		
@@ -36,6 +36,30 @@ public class ToDoServiceImpl implements ToDoService {
 
 		
 		return toDoMapper.selectMyToDo(memberId);
+	}
+
+	@Override
+	public boolean updateFinished(int tno, boolean finished) {
+		
+		boolean result = false;
+		
+		if(toDoMapper.updateFinished(tno, finished) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public boolean modifyToDo(ToDoDTO toDoDTO) {
+		
+		boolean result = false;
+		
+		if(toDoMapper.modifyToDo(toDoDTO) == 1) {
+			result = true;
+		}
+		
+		return result;
 	}
 
 }

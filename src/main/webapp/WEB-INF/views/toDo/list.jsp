@@ -10,10 +10,7 @@
 <script>
 	
 
-	// 디폴트 = 완료된 일 빼고 보기 
-	// 완료된 일까지 보기 추가
-	// 지나간 날짜 보기는 디폴트?
-	// 마감일 기준 정렬, 작성일 기준 정렬 추가
+	// checkBox랑 등록버튼 이벤트버블링 막기
 
 	let memoDataOrigin = [];
 	let memoDataCopy = [];
@@ -26,7 +23,8 @@
 		decideCopyForShow();
 		sortCopy();
 		showToDoList();
-
+		
+		// 완료 여부에 따른 show 클릭 이벤트
 		$(".for-show-by-finished").click(function(){
 			$(".for-show-by-finished").removeClass("btn-primary");
 			$(".for-show-by-finished").addClass("btn-outline-primary");
@@ -41,6 +39,7 @@
 			showToDoList();
 		});
 
+		// 마감된 일 show 클릭 이벤트
 		$(".for-show-by-due").click(function(){
 
 			memoDataCopy = [];
@@ -61,6 +60,7 @@
 			showToDoList();
 		});
 
+		// 정렬 기준 클릭 이벤트
 		$(".for-sort").click(function(){
 			$(".for-sort").removeClass("btn-primary");
 			$(".for-sort").addClass("btn-outline-primary");
@@ -68,12 +68,143 @@
 			$(this).removeClass("btn-outline-primary");
 			sortBasis = $(this).data("basis");
 
+			decideCopyForShow();
 			sortCopy();
 			showToDoList();
 		});
 
+		// 완료 여부 수정
+		// $("body").on("change", ".finishedCheckbox", function(event){
+			
+		// 	event.stopPropagation();
+		// 	let tno = $(this).data("tno");
+		// 	let checked = $(this).is(":checked");
+
+		// 	$.ajax({
+		// 		url: '/toDo/updateFinished', // 데이터가 송수신될 서버의 주소
+		// 		type: "POST", // 통신 방식 (GET, POST, PUT, DELETE)
+		// 		dataType: "text", // 수신받을 데이터 타입 (MIME TYPE) (text, json, xml)
+		// 		data: {
+		// 			  "tno" : tno,
+		// 			  "finished" : checked
+		// 		  },  // 보내는 데이터
+		// 		async: false, // 동기 통신 방식
+		// 		success: function (data) {
+		// 			// 통신이 성공하면 수행할 함수
+		// 			console.log(data);
+		// 			callToDoList();
+				
+				
+		// 		},
+		// 		error: function () {},
+		// 		complete: function () {
+		// 		},
+		// 	});
+		// })
+	
+
+		// toDo 수정
+		$("body").on("click", ".toDoBox", function(){
+			console.log($(this));
+
+			if(!$(this).data("isModifying")){
+
+			
+				$(this).data("isModifying", true);
+
+				let toDoMemo = $(this).find(".toDo").text();
+				let dueDateMemo = $(this).find(".dueDate").text();
+				let tnoMemo = $(this).data("tno");
+				let finishedMemo = $(this).find(".finishedCheckbox").is(":checked");
+				
+				console.log(toDoMemo, dueDateMemo, $(this).data("tno"), finishedMemo, tnoMemo);
+
+				let modifyOutput = ``;
+				modifyOutput += `<input type="hidden" value="\${tnoMemo}" name="tno">`;
+				modifyOutput += `<input type="text" name="toDo" value="\${toDoMemo}" id="modifyTodo-tno-\${tnoMemo}">`;
+				modifyOutput += `<input type="date" class="input-dueDate" name="dueDateStr" value="\${dueDateMemo}" id="modifyDueDate-tno-\${tnoMemo}">`;
+				if (finishedMemo == true){
+					modifyOutput += `<input type="checkbox" class="form-check-input finishedCheckbox" data-tno="\${tnoMemo}" checked> `;
+				} else {
+					modifyOutput += `<input type="checkbox" class="form-check-input finishedCheckbox" data-tno="\${tnoMemo}"> `;
+				}
+				modifyOutput += `<button type="submit" class="btn btn-primary modifyBtn" onclick="modifyTodo(this, \${tnoMemo})">등록</button>`;
+				
+				$(this).html(modifyOutput);
+			}
+		});
+
+		
 	});
 
+	// toDo 날짜 유효성 검사
+	function dueDateValid(dueDateVal){
+		let dueDate = new Date(dueDateVal);
+		let today = new Date();
+
+		if(dueDate.getFullYear() > today.getFullYear() || 
+			dueDate.getFullYear() == today.getFullYear() && dueDate.getMonth() > today.getMonth() ||
+			dueDate.getFullYear() == today.getFullYear() && dueDate.getMonth() == today.getMonth() && dueDate.getDate() >= today.getDate() ){
+			
+				return true;
+		}
+
+		return false;
+	}
+
+	// toDo 길이 유효성 검사
+	function toDoLengthValid(toDoVal){
+
+		if (toDoVal.length <= 100){
+			return true;
+		}
+
+		return false;
+	}
+
+	// toDo 유효성 검사 및 수정
+	function modifyTodo(thisBtn, tno){
+		// let toDoVal = $(thisBtn).prev().prev().prev().val();
+		// let dueDateVal = $(thisBtn).prev().prev().val();
+
+		let toDoVal = $(thisBtn).siblings(`#modifyTodo-tno-\${tno}`).val();
+		let dueDateVal = $(thisBtn).siblings(`#modifyDueDate-tno-\${tno}`).val();
+		let finishedVal = $(thisBtn).siblings(`.finishedCheckbox`).is(":checked");
+
+		console.log(toDoVal, dueDateVal);
+
+		let result = false;
+		let toDoLengthValidCheck = toDoLengthValid(toDoVal);
+		let dueDateValidCheck = dueDateValid(dueDateVal);
+		
+		if(toDoLengthValidCheck && dueDateValidCheck){
+
+			$.ajax({
+				url: '/toDo/modifyToDo', // 데이터가 송수신될 서버의 주소
+				type: "POST", // 통신 방식 (GET, POST, PUT, DELETE)
+				dataType: "text", // 수신받을 데이터 타입 (MIME TYPE) (text, json, xml)
+				data: {
+					  "tno" : tno,
+					  "toDo" : toDoVal,
+					  "dueDateStr" : dueDateVal,
+					  "finished" : finishedVal
+				  },  // 보내는 데이터
+				async: false, // 동기 통신 방식
+				success: function (data) {
+					// 통신이 성공하면 수행할 함수
+					console.log(data);
+					
+					location.reload(true);
+				},
+				error: function () {},
+				complete: function () {
+				},
+			});
+		}
+
+	}
+
+	// 카피본 정렬
 	function sortCopy(){
 		
 		if (sortBasis == "dueFast"){
@@ -138,7 +269,7 @@
 
 		if (finished == 0 && !includePast){
 			$.each(memoDataOrigin, function(i, item){
-				let remainDay = calculateRemainDay(item);
+				let remainDay = calculateRemainDay(item.dueDate);
 				if(!item.finished && remainDay >= 0){
 					memoDataCopy.push(item);
 				}
@@ -153,7 +284,7 @@
 
 		} else if (finished == 1 && !includePast){
 			$.each(memoDataOrigin, function(i, item){
-				let remainDay = calculateRemainDay(item);
+				let remainDay = calculateRemainDay(item.dueDate);
 				if(item.finished && remainDay >= 0){
 					memoDataCopy.push(item);
 				}
@@ -168,7 +299,7 @@
 
 		} else if (finished == "all" && !includePast){
 			$.each(memoDataOrigin, function(i, item){
-				let remainDay = calculateRemainDay(item);
+				let remainDay = calculateRemainDay(item.dueDate);
 				if(remainDay >= 0){
 					memoDataCopy.push(item);
 				}
@@ -184,8 +315,8 @@
 	}
 
 	// dueDate까지의 날은 일수 계산
-	function calculateRemainDay(item){
-		let dueDate = new Date (item.dueDate);
+	function calculateRemainDay(dueDateParam){
+		let dueDate = new Date (dueDateParam);
 		let tmpday = new Date();
 		let tmpStr = `\${tmpday.getFullYear()}-\${tmpday.getMonth() + 1}-\${tmpday.getDate()}`;
 		let today = new Date(tmpStr);
@@ -199,25 +330,27 @@
 		let output = ``;
 		$.each(memoDataCopy, function(i, item){
 			
-			let remainDay = calculateRemainDay(item);
+			let remainDay = calculateRemainDay(item.dueDate);
 
 			if (item.finished == true){
-				output += `<a href="#" class="list-group-item list-group-item-action list-group-item-success" id="tno-\${item.tno}" data-tno="\${item.tno}>`;
+				output += `<a href="#" class="list-group-item list-group-item-action list-group-item-success toDoBox" id="tno-\${item.tno}" data-tno="\${item.tno}" data-isModifying="false">`;
 			} else if (remainDay >= 0 && remainDay <= 3){
-				output += `<a href="#" class="list-group-item list-group-item-action list-group-item-danger" id="tno-\${item.tno}" data-tno="\${item.tno}>`;
+				output += `<a href="#" class="list-group-item list-group-item-action list-group-item-danger toDoBox" id="tno-\${item.tno}" data-tno="\${item.tno}" data-isModifying="false">`;
 			} else if (remainDay < 0){
-				output += `<a href="#" class="list-group-item list-group-item-action list-group-item-secondary" id="tno-\${item.tno}" data-tno="\${item.tno}>`;
+				output += `<a href="#" class="list-group-item list-group-item-action list-group-item-secondary toDoBox" id="tno-\${item.tno}" data-tno="\${item.tno}" data-isModifying="false">`;
 			} else {
-				output += `<a href="#" class="list-group-item list-group-item-action" id="tno-\${item.tno}" data-tno="\${item.tno}>`;
+				output += `<a href="#" class="list-group-item list-group-item-action toDoBox" id="tno-\${item.tno}" data-tno="\${item.tno}" data-isModifying="false">`;
 			}
 				
-			output += `<span id="toDo">\${item.toDo} </span><span id="dueDate">\${item.dueDate}</span>`;
+			output += `<span class="toDo">\${item.toDo} </span> <span class="dueDate">\${item.dueDate}</span>`;
 
 			if (item.finished == true){
-				output += `<input type="checkbox" class="form-check-input finishedCheckbox" data-tno="\${item.tno}" checked `;
+				output += `<input type="checkbox" class="form-check-input finishedCheckbox" data-tno="\${item.tno}" checked> `;
 			} else {
-				output += `<input type="checkbox" class="form-check-input finishedCheckbox" data-tno="\${item.tno}" `;
+				output += `<input type="checkbox" class="form-check-input finishedCheckbox" data-tno="\${item.tno}"> `;
 			}
+
+			
 			output += `</a>`;
 		});
 
@@ -257,13 +390,17 @@
 	}
 	.finishedCheckbox {
 		margin-left: 20px;
+		margin-right: 20px;
 	}
-	#dueDate {
+	.dueDate {
 		margin-left: 20px;
 	}
 	#for-sort-div{
 		padding-left: 0px;
 		margin-top: 20px;
+	}
+	.input-dueDate{
+		margin-left: 20px;
 	}
 </style>
 <body>

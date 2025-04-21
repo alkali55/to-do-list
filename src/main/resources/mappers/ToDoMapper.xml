@@ -10,4 +10,12 @@
 	<select id="selectMyToDo" resultType="ToDoVO">
 		select * from jis_todolist where writer = #{memberId} order by tno desc
 	</select>
+	
+	<update id="updateFinished">
+		update jis_todolist set finished = #{finished} where tno = #{tno}
+	</update>
+	
+	<update id="modifyToDo">
+		update jis_todolist set toDo = #{toDo}, dueDate = #{dueDate}, finished = #{finished} where tno = #{tno};
+	</update>
 </mapper>

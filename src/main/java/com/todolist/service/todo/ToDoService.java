@@ -10,4 +10,8 @@ public interface ToDoService {
 	boolean insertToDo(ToDoDTO toDoDto);
 
 	List<ToDoVO> selectMyToDo(String memberId);
+
+	boolean updateFinished(int tno, boolean finished);
+
+	boolean modifyToDo(ToDoDTO toDoDTO);
 }

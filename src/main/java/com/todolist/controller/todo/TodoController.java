@@ -55,13 +55,13 @@ public class ToDoController {
 		toDoDTO.setWriter(loginMember.getMemberId());
 		toDoDTO.setDueDate(LocalDate.parse(dueDateStr));
 		
-		log.info("toDoDTO : {}", toDoDTO);
+//		log.info("toDoDTO : {}", toDoDTO);
 		
 		if(toDoService.insertToDo(toDoDTO)) {
 			result = "success";
 		};
 		
-		log.info("결과 : {}", result);
+//		log.info("결과 : {}", result);
 		
 		return "redirect:/";
 	}
@@ -85,12 +85,41 @@ public class ToDoController {
 		
 		List<ToDoVO> list = toDoService.selectMyToDo(memberId);
 		
-		for(ToDoVO toDo : list) {
-			log.info("toDo : {}", toDo);
-		}
+//		for(ToDoVO toDo : list) {
+//			log.info("toDo : {}", toDo);
+//		}
 		
 		
 		return list;
 	}
 	
+	@PostMapping("/updateFinished")
+	@ResponseBody
+	public String updateFinished(int tno, boolean finished) {
+		String result = "fail";
+		
+		if(toDoService.updateFinished(tno, finished)) {
+			result = "success";
+		}
+		
+		
+//		log.info("result : {}", result);
+		return result;
+		
+	}
+	
+	@PostMapping("/modifyToDo")
+	@ResponseBody
+	public String modifyToDo(ToDoDTO toDoDTO, String dueDateStr, HttpSession session) {
+		String result = "fail";
+		
+		toDoDTO.setDueDate(LocalDate.parse(dueDateStr));
+		
+		if(toDoService.modifyToDo(toDoDTO)) {
+			result = "success";
+		};
+		
+		return result;
+		
+	}
 }
