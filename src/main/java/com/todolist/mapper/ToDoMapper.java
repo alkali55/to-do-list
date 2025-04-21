@@ -16,5 +16,7 @@ public interface ToDoMapper {
 	int updateFinished(@Param("tno")int tno, @Param("finished")boolean finished);
 
 	int modifyToDo(ToDoDTO toDoDTO);
+
+	List<ToDoVO> selectToDoDueTomorrow();
 	
 }

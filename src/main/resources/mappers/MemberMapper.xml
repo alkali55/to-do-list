@@ -18,4 +18,8 @@
   	<select id="loginMember" resultType="memberVO">
   		select memberId, email, memberName from jis_member where memberId = #{memberId} and memberPwd = sha1(md5(#{memberPwd}))
   	</select>
+  	
+  	<select id="selectEmailByMemberId" resultType="String">
+  		select email from jis_member where memberId = #{memberId}
+  	</select>
 </mapper>
