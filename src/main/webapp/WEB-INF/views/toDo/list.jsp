@@ -10,13 +10,14 @@
 <script>
 	
 
-	// checkBox랑 등록버튼 이벤트버블링 막기
+	// decideCopyForShow 마무리하기
 
 	let memoDataOrigin = [];
 	let memoDataCopy = [];
 	let finished = 0;
 	let includePast = false;
 	let sortBasis = "dueFast";
+	let searchFilter = false;
 
 	$(function(){
 		callToDoList();
@@ -42,7 +43,6 @@
 		// 마감된 일 show 클릭 이벤트
 		$(".for-show-by-due").click(function(){
 
-			memoDataCopy = [];
 
 			if ($(this).hasClass("btn-outline-primary")){
 				$(this).removeClass("btn-outline-primary");
@@ -73,6 +73,30 @@
 			showToDoList();
 		});
 
+		// 검색필터
+		$(".searchFilter").click(function(){
+			if (!searchFilter){
+				$(this).addClass("btn-primary");
+				$(this).removeClass("btn-outline-primary");
+				searchFilter = true;
+			} else {
+				$(this).removeClass("btn-primary");
+				$(this).addClass("btn-outline-primary");
+				searchFilter = false;
+			}
+		})
+
+		// 필터 인풋태그 키업이벤트
+		$("#inputFilter").keyup(function(){
+			if(!searchFilter){
+				return;
+			}
+
+			decideCopyForShow();
+			sortCopy();
+			showToDoList();
+		})
+
 		// 완료 여부 수정
 		// $("body").on("change", ".finishedCheckbox", function(event){
 			
@@ -101,7 +125,7 @@
 		// 		},
 		// 	});
 		// })
-	
+
 
 		// toDo 수정
 		$("body").on("click", ".toDoBox", function(){
@@ -311,7 +335,15 @@
 			});
 		}
 
-		
+		if(searchFilter){
+			memoDataCopy = memoDataCopy.filter(toDoDTO => {
+				let searchWord = $("#inputFilter").val();
+				return toDoDTO.toDo.includes(searchWord);
+			})
+		}
+
+		// searchFilter = ture 면
+		// copyOfCopy 배열 생성해서 array.filter 메소드로 검색어 필터링
 	}
 
 	// dueDate까지의 날은 일수 계산
@@ -430,6 +462,12 @@
 						<button type="button" class="btn btn-outline-primary for-sort" data-basis="dueSlow">마감일 느린 기준</button>
 						<button type="button" class="btn btn-outline-primary for-sort" data-basis="regFast">작성일 빠른 기준</button>
 						<button type="button" class="btn btn-outline-primary for-sort" data-basis="regSlow">작성일 느린 기준</button>
+					</li>
+					<li class="list-group-item">
+						<div class="input-group mb-3">
+							<button class="btn btn-outline-primary searchFilter" type="submit">검색필터켜기</button>
+							<input type="text" class="form-control" placeholder="Search" id="inputFilter">
+						</div>
 					</li>
 				  </ul>
 			</div>
