@@ -60,7 +60,8 @@
 		})
 	
 		// 이메일 검사
-		$("#email").blur(function(){
+		$("#email").keyup(function(){
+			$("#emailRegValid").val("");
 			if ($("#email").val().length > 0) {
 				checkEmail();
 			} else {
@@ -68,20 +69,31 @@
 			}
 		});
 
+		// 이메일 중복검사
+		$("#emailDupCheckBtn").click(function(e){
+			e.preventDefault();
+			checkEmailDup();
+		})
+
 		// 인증메일 보내기
 		$("#sendEmail").click(function(e){
 			e.preventDefault();
+
+			if($("#emailRegValid").val() != "checked"){
+				return;
+			}
+
 			$("#email").attr("disabled", true);
 			sendMail();
 		})
 
 	});
 
+	// 타이머 변수
 	let count = 180;
 	let timer;
 	let stopper;
 
-	// 인증완료시 clearTimeout(timer) 만 호출, 
 
 	function setTimer(){
 		count = 180;
@@ -151,6 +163,7 @@
 		$("#email").attr("disabled", false)
 		clearError($("#email"));
 		$("#forCheckAuthDiv").empty();
+		$("#emailDupCheckBtn").css("display", "block");
 
 	}
 
@@ -243,6 +256,41 @@
 		
 	}
 
+	function checkEmailDup(){
+		if($("#emailRegValid").val() != "checked"){
+			return;
+		}
+
+		let tmpEmail = $("#email").val();
+
+		$.ajax({
+		      url: "/member/isDuplicatedEmail", // 데이터가 송수신될 서버의 주소
+		      type: "POST", // 통신 방식 (GET, POST, PUT, DELETE)
+			  data: {
+				  tmpEmail : tmpEmail
+			  },  // 보내는 데이터
+		      dataType: "text", // 수신받을 데이터 타입 (MIME TYPE)
+		      // async: false, // 동기 통신 방식
+		      success: function (data) {
+		        // 통신이 성공하면 수행할 함수
+		        // console.log(data);
+				if(data == "true"){
+					outputError("이미 존재하는 이메일입니다.", $("#email"), "red");
+				} else {
+					clearError($("#email"));
+					outputError("사용가능한 이메일입니다.", $("#email"), "green")
+					$("#sendEmail").css("display", "block");
+					$("#emailDupCheckBtn").css("display", "none");
+				}
+			
+		      },
+		      error: function () {},
+		      complete: function () {
+		      },
+    	});
+
+	}
+
 	function checkEmail(){
 
 		let tmpMemberEmail = $("#email").val();
@@ -252,7 +300,7 @@
 			outputError("이메일 형식이 아닙니다.", $("#email"), "red");
 		} else {
 			outputError("이메일 형식입니다.", $("#email"), "green");
-			$("#sendEmail").css("display", "block");
+			$("#emailRegValid").val("checked");
 			
 		}
 	}
@@ -278,7 +326,7 @@
 
 		// console.log(tmpMemberId);
 		$.ajax({
-	          url: "/member/isDuplicate", // 데이터가 송수신될 서버의 주소
+	          url: "/member/isDuplicatedId", // 데이터가 송수신될 서버의 주소
 	          type: "POST", // 통신 방식 (GET, POST, PUT, DELETE)
 			  data: {
 				  tmpMemberId : tmpMemberId
@@ -318,6 +366,7 @@
 		$("#idRegValid").val("");
 		$("#idValid").val("");
 		$("#pwdValid").val("");
+		$("#emailRegValid").val("");
 		$("#emailValid").val("");
 		$("#email").attr("disabled", false);
 		clearError($("#memberId"));
@@ -405,7 +454,7 @@
 			      <input type="text" class="form-control" id="memberId" name="memberId" placeholder="아이디를 입력하세요" >
 			      <input type="hidden" id="idRegValid"/>
 			      <input type="hidden" id="idValid"/>
-			      <button class="btn btn-success check-btn" style="display: none;" id="idDupCheckBtn">아이디 중복확인</button>
+			      <button class="btn btn-success check-btn" id="idDupCheckBtn">아이디 중복확인</button>
 			    </div>
 			    <div class="mb-3">
 			      <label for="memberPwd1">비밀번호 : </label><span></span>
@@ -420,8 +469,10 @@
 			      <label for="email">이메일 :</label><span></span>
 			      <input type="email" class="form-control" id="email" placeholder="이메일을 입력하세요" name="email">
 				  <div id="forCheckAuthDiv"></div>
+			      <input type="hidden" id="emailRegValid"/>
 			      <input type="hidden" id="emailValid"/>
-				  <button class="btn btn-success check-btn" style="display: none;" id="sendEmail">인증메일 보내기</button>
+				  <button class="btn btn-success check-btn" id="emailDupCheckBtn">이메일 중복확인</button>
+				  <button class="btn btn-primary check-btn" style="display: none;" id="sendEmail">인증메일 보내기</button>
 			    </div>
 				<div class="mb-3">
 					<label for="memberName">이름 : </label><span></span>

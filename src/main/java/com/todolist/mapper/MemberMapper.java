@@ -15,4 +15,6 @@ public interface MemberMapper {
 	MemberVO loginMember(LoginDTO loginDTO);
 	
 	String selectEmailByMemberId(String memberId);
+
+	int emailDupCheck(String tmpEmail);
 }

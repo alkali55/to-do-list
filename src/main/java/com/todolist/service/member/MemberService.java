@@ -11,4 +11,6 @@ public interface MemberService {
 	boolean insertMember(MemberDTO memberDTO);
 
 	MemberVO loginMember(LoginDTO loginDTO);
+
+	String isDupEmail(String tmpEmail);
 }

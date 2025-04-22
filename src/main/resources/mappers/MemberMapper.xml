@@ -22,4 +22,8 @@
   	<select id="selectEmailByMemberId" resultType="String">
   		select email from jis_member where memberId = #{memberId}
   	</select>
+  	
+  	<select id="emailDupCheck" resultType="int">
+  		select count(*) from jis_member where email = #{tmpEmail}
+  	</select>
 </mapper>

@@ -44,7 +44,7 @@ public class MemberController {
 	}
 	
 	@ResponseBody
-	@PostMapping("/isDuplicate")
+	@PostMapping("/isDuplicatedId")
 	public String isDuplicateId(@RequestParam("tmpMemberId") String tmpMemberId) {
 		
 		log.info("tmpMemberId : {}", tmpMemberId);
@@ -52,6 +52,18 @@ public class MemberController {
 		String result = memberService.isDupId(tmpMemberId);
 		
 		log.info(result);
+		
+		return result;
+	}
+	
+	@PostMapping("/isDuplicatedEmail")
+	@ResponseBody
+	public String isDuplicateEmail(@RequestParam("tmpEmail") String tmpEmail) {
+		
+		
+		
+		String result = memberService.isDupEmail(tmpEmail);
+		
 		
 		return result;
 	}
@@ -153,8 +165,38 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/mypage")
-	public void myPage() {
+	@GetMapping("/mypageLogin")
+	public String myPageLoginGet(HttpSession session) {
 		
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		
+		return "/member/mypageLogin";
+	}
+	
+	@PostMapping("/mypageLogin")
+	public String myPageLoginPost(HttpSession session, String memberPwd) {
+		String result = "";
+		LoginDTO loginDTO = new LoginDTO(((MemberVO)session.getAttribute("loginMember")).getMemberId(), memberPwd);
+		
+		MemberVO loginMember = memberService.loginMember(loginDTO);
+		
+		if (loginMember != null) {
+			result = "redirect:/member/mypage";
+		} else {
+			result = "redirect:/member/mypageLogin?login=fail";
+		}
+		
+		return result;
+	}
+	
+	@GetMapping("/mypage")
+	public String mypage(HttpSession session) {
+		
+		if(session.getAttribute("loginMember") == null) {
+			return "redirect:/";
+		}
+		return "/member/mypage";
 	}
 }

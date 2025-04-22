@@ -14,8 +14,12 @@
 	let memberName = "";
 
 	$(function(){
-		callToDoList();
+
 		
+
+		if($("#toGetName").text() != ""){
+			callToDoList();
+		}
 		createDangerToDo();
 
 		memberName = $("#toGetName").text();
@@ -27,7 +31,7 @@
 			showFastestToDo();
 		} else {
 
-			let output = `<h2>남은 할 일이 없습니다!</h2>`;
+			let output = `<h2 id="forBottomMargin">남은 할 일이 없습니다!</h2>`;
 			output = `<h3>새로운 할 일을 추가해 보세요!</h3>`;
 			output += `<a href="/toDo/register" class="btn btn-outline-primary regBtn" onclick="moveRegPage()">새 할 일 등록하기</a>`
 			$("#mainBox").html(output);
@@ -38,7 +42,7 @@
 	})
 
 	function showFastestToDo(){
-		let output = `<h2>\${memberName}님의 다음 할 일</h2>`;
+		let output = `<h2 id="forBottomMargin">\${memberName}님의 다음 할 일</h2>`;
 		output += `<div class="list-group" id="toDoBox">`;
 		output += `<a href="#" class="list-group-item list-group-item-action toDoBox" id="tno-\${memoDataOrigin[0].tno}" data-tno="\${memoDataOrigin[0].tno}">`;
 		output += `<span class="toDo">\${memoDataOrigin[0].toDo} </span> <span class="dueDate">\${memoDataOrigin[0].dueDate}</span>`;
@@ -64,7 +68,7 @@
 	}
 
 	function showDangerToDo(){
-		let output = `<h2>\${memberName}님의 마감이 임박한 할 일</h2>`;
+		let output = `<h2 id="forBottomMargin">\${memberName}님의 마감이 임박한 할 일</h2>`;
 		output += `<div class="list-group" id="toDoBox">`;
 
 		$.each(dangerToDo, function(i, item){
@@ -133,6 +137,9 @@
 		margin-left: 20px;
 	}
 	
+	#forBottomMargin{
+		margin-bottom: 50px;
+	}
 </style>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>

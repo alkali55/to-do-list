@@ -51,4 +51,17 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.loginMember(loginDTO);
 	}
 
+
+	@Override
+	public String isDupEmail(String tmpEmail) {
+		String result = "";
+		
+		if(memberMapper.emailDupCheck(tmpEmail) == 1) {
+			result = "true";
+		} else {
+			result = "false";
+		}
+		return result;
+	}
+
 }
