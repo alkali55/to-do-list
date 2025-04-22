@@ -29,7 +29,7 @@
 			      <label for="memberPwd">비밀번호:</label>
 			      <input type="password" class="form-control" id="memberPwd" placeholder="비밀번호를 입력하세요" name="memberPwd">
 			    </div>
-			    <button type="submit" class="btn btn-primary">로그인</button>
+			    <button type="submit" class="btn btn-primary">확인</button>
 			    <button type="reset" class="btn btn-secondary">취소</button>
 			  </form>
 		</div>

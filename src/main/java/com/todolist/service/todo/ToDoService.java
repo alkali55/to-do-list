@@ -14,4 +14,6 @@ public interface ToDoService {
 	boolean updateFinished(int tno, boolean finished);
 
 	boolean modifyToDo(ToDoDTO toDoDTO);
+
+	List<ToDoVO> selectNotFinishedList(String memberId);
 }

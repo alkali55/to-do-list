@@ -122,4 +122,21 @@ public class ToDoController {
 		return result;
 		
 	}
+	
+	@PostMapping("/notFinishedList")
+	@ResponseBody
+	public List<ToDoVO> selectNotFinishedList(HttpSession session) {
+		
+		
+		String memberId = ((MemberVO)session.getAttribute("loginMember")).getMemberId();
+		
+		List<ToDoVO> list = toDoService.selectNotFinishedList(memberId);
+		
+//		for(ToDoVO toDo : list) {
+//			log.info("toDo : {}", toDo);
+//		}
+		
+		
+		return list;
+	}
 }

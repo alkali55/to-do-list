@@ -18,5 +18,7 @@ public interface ToDoMapper {
 	int modifyToDo(ToDoDTO toDoDTO);
 
 	List<ToDoVO> selectToDoDueTomorrow();
+
+	List<ToDoVO> selectNotFinishedList(String memberId);
 	
 }

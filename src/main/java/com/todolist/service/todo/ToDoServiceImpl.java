@@ -62,4 +62,10 @@ public class ToDoServiceImpl implements ToDoService {
 		return result;
 	}
 
+	@Override
+	public List<ToDoVO> selectNotFinishedList(String memberId) {
+		
+		return toDoMapper.selectNotFinishedList(memberId);
+	}
+
 }

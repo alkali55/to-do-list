@@ -22,4 +22,8 @@
 	<select id="selectToDoDueTomorrow" resultType="ToDoVO">
 		select * from jis_todolist where datediff(dueDate, now()) between 0 and 3;
 	</select>
+	
+	<select id="selectNotFinishedList" resultType="ToDoVO">
+		select * from jis_todolist where writer = #{memberId} and finished = false order by dueDate
+	</select>
 </mapper>

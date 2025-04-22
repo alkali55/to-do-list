@@ -10,7 +10,7 @@
 <script>
 	
 
-	// decideCopyForShow 마무리하기
+	
 
 	let memoDataOrigin = [];
 	let memoDataCopy = [];
@@ -132,16 +132,21 @@
 			console.log($(this));
 
 			if(!$(this).data("isModifying")){
-
-			
-				$(this).data("isModifying", true);
-
-				let toDoMemo = $(this).find(".toDo").text();
-				let dueDateMemo = $(this).find(".dueDate").text();
-				let tnoMemo = $(this).data("tno");
-				let finishedMemo = $(this).find(".finishedCheckbox").is(":checked");
+				let tmpTnoMemo = $(this).prop("id");
 				
-				console.log(toDoMemo, dueDateMemo, $(this).data("tno"), finishedMemo, tnoMemo);
+				decideCopyForShow();
+				sortCopy();
+				showToDoList();
+
+				// $("a").data("isModifying", false);
+				$(`#\${tmpTnoMemo}`).data("isModifying", true);
+
+				let toDoMemo = $(`#\${tmpTnoMemo}`).find(".toDo").text();
+				let dueDateMemo = $(`#\${tmpTnoMemo}`).find(".dueDate").text();
+				let tnoMemo = $(`#\${tmpTnoMemo}`).data("tno");
+				let finishedMemo = $(`#\${tmpTnoMemo}`).find(".finishedCheckbox").is(":checked");
+				
+				console.log(toDoMemo, dueDateMemo, $(`#\${tmpTnoMemo}`).data("tno"), finishedMemo, tnoMemo);
 
 				let modifyOutput = ``;
 				modifyOutput += `<input type="hidden" value="\${tnoMemo}" name="tno">`;
@@ -154,7 +159,7 @@
 				}
 				modifyOutput += `<button type="submit" class="btn btn-primary modifyBtn" onclick="modifyTodo(this, \${tnoMemo})">등록</button>`;
 				
-				$(this).html(modifyOutput);
+				$(`#\${tmpTnoMemo}`).html(modifyOutput);
 			}
 		});
 
@@ -342,8 +347,6 @@
 			})
 		}
 
-		// searchFilter = ture 면
-		// copyOfCopy 배열 생성해서 array.filter 메소드로 검색어 필터링
 	}
 
 	// dueDate까지의 날은 일수 계산
