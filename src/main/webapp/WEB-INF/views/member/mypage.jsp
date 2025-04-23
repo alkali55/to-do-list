@@ -223,7 +223,6 @@
 			// async: false, // 동기 통신 방식
 			success: function (data) {
 				// 통신이 성공하면 수행할 함수
-				console.log(data);
 				if(data == "true"){
 					$(".timer").empty();
 					$("#authBtn").css("display", "none");
@@ -257,7 +256,6 @@
 			// async: false, // 동기 통신 방식
 			success: function (data) {
 			// 통신이 성공하면 수행할 함수
-			console.log(data);
 			if (data == "success"){
 				alert("이메일로 인증번호를 발송했습니다. 인증코드를 입력해주세요.")
 				

@@ -129,7 +129,7 @@
 
 		// toDo 수정
 		$("body").on("click", ".toDoBox", function(){
-			console.log($(this));
+			// console.log($(this));
 
 			if(!$(this).data("isModifying")){
 				let tmpTnoMemo = $(this).prop("id");
@@ -146,7 +146,7 @@
 				let tnoMemo = $(`#\${tmpTnoMemo}`).data("tno");
 				let finishedMemo = $(`#\${tmpTnoMemo}`).find(".finishedCheckbox").is(":checked");
 				
-				console.log(toDoMemo, dueDateMemo, $(`#\${tmpTnoMemo}`).data("tno"), finishedMemo, tnoMemo);
+				// console.log(toDoMemo, dueDateMemo, $(`#\${tmpTnoMemo}`).data("tno"), finishedMemo, tnoMemo);
 
 				let modifyOutput = ``;
 				modifyOutput += `<input type="hidden" value="\${tnoMemo}" name="tno">`;
@@ -179,7 +179,7 @@
 			async: false, // 동기 통신 방식
 			success: function (data) {
 				// 통신이 성공하면 수행할 함수
-				console.log(data);
+				// console.log(data);
 				
 				location.reload(true);
 			},
@@ -223,7 +223,7 @@
 		let dueDateVal = $(thisBtn).siblings(`#modifyDueDate-tno-\${tno}`).val();
 		let finishedVal = $(thisBtn).siblings(`.finishedCheckbox`).is(":checked");
 
-		console.log(toDoVal, dueDateVal);
+		// console.log(toDoVal, dueDateVal);
 
 		let result = false;
 		let toDoLengthValidCheck = toDoLengthValid(toDoVal);
@@ -244,7 +244,7 @@
 				async: false, // 동기 통신 방식
 				success: function (data) {
 					// 통신이 성공하면 수행할 함수
-					console.log(data);
+					// console.log(data);
 					
 					location.reload(true);
 				},
@@ -428,7 +428,7 @@
 	        success: function (data) {
 	          // 통신이 성공하면 수행할 함수
 			  memoDataOrigin = data;
-	          console.log(memoDataOrigin);
+	        //   console.log(memoDataOrigin);
 	          
 	          
 	        },
