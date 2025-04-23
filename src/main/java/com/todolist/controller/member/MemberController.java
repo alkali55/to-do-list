@@ -199,4 +199,31 @@ public class MemberController {
 		}
 		return "/member/mypage";
 	}
+	
+	@PostMapping("/modifyMyInformation")
+	public String modifyMyInformation(MemberDTO memberDTO, HttpSession session) {
+		
+		log.info("memberDTO : {} ", memberDTO);
+//		log.info("결과 : {}", memberDTO.getMemberPwd() == "");
+		if(memberService.modifyMyInformation(memberDTO)) {
+			MemberVO loginMember = new MemberVO();
+			loginMember.setMemberId(memberDTO.getMemberId());
+			loginMember.setEmail(memberDTO.getEmail());
+			loginMember.setMemberName(memberDTO.getMemberName());
+			session.setAttribute("loginMember", loginMember);
+		}
+		
+		return "redirect:/";
+	}
+	
+	@PostMapping("/leaveMember")
+	public String leaveMember(HttpSession session) {
+		
+		String memberId = ((MemberVO)session.getAttribute("loginMember")).getMemberId();
+		if(memberService.deleteMember(memberId)) {
+			session.removeAttribute("loginMember");
+		};
+		
+		return "redirect:/";
+	}
 }

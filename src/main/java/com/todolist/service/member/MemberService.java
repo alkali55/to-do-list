@@ -13,4 +13,8 @@ public interface MemberService {
 	MemberVO loginMember(LoginDTO loginDTO);
 
 	String isDupEmail(String tmpEmail);
+
+	boolean modifyMyInformation(MemberDTO memberDTO);
+
+	boolean deleteMember(String memberId);
 }

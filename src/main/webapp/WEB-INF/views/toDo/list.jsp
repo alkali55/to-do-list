@@ -158,6 +158,7 @@
 					modifyOutput += `<input type="checkbox" class="form-check-input finishedCheckbox" data-tno="\${tnoMemo}"> `;
 				}
 				modifyOutput += `<button type="submit" class="btn btn-primary modifyBtn" onclick="modifyTodo(this, \${tnoMemo})">등록</button>`;
+				modifyOutput += `<button type="submit" class="btn btn-danger deleteBtn" onclick="deleteTodo(\${tnoMemo})">삭제</button>`;
 				
 				$(`#\${tmpTnoMemo}`).html(modifyOutput);
 			}
@@ -165,6 +166,28 @@
 
 		
 	});
+
+	// toDo 삭제
+	function deleteTodo(tno){
+		$.ajax({
+			url: '/toDo/deleteTodo', // 데이터가 송수신될 서버의 주소
+			type: "POST", // 통신 방식 (GET, POST, PUT, DELETE)
+			dataType: "text", // 수신받을 데이터 타입 (MIME TYPE) (text, json, xml)
+			data: {
+				  "tno" : tno
+			  },  // 보내는 데이터
+			async: false, // 동기 통신 방식
+			success: function (data) {
+				// 통신이 성공하면 수행할 함수
+				console.log(data);
+				
+				location.reload(true);
+			},
+			error: function () {},
+			complete: function () {
+			},
+		});
+	}
 
 	// toDo 날짜 유효성 검사
 	function dueDateValid(dueDateVal){
@@ -435,6 +458,9 @@
 		margin-top: 20px;
 	}
 	.input-dueDate{
+		margin-left: 20px;
+	}
+	.deleteBtn{
 		margin-left: 20px;
 	}
 </style>

@@ -68,4 +68,15 @@ public class ToDoServiceImpl implements ToDoService {
 		return toDoMapper.selectNotFinishedList(memberId);
 	}
 
+	@Override
+	public boolean deleteToDo(String tno) {
+		boolean result = false;
+		
+		if(toDoMapper.deleteToDo(tno) == 1) {
+			result = true;
+		}
+		
+		return result;
+	}
+
 }

@@ -11,8 +11,12 @@
 
 	$(function(){
 		if(getParameter("login") == "fail"){
-			alert("잘못된 비밀번호 입력입니다");
+			$("#myModal").show();
 		}
+		
+		$(".closeModal").click(function(){
+			$("#myModal").hide();
+		})
 	});
 
 	function getParameter(queryName){
@@ -60,6 +64,31 @@
 			    <button type="submit" class="btn btn-primary">확인</button>
 			    <button type="reset" class="btn btn-secondary">취소</button>
 			  </form>
+		</div>
+	</div>
+
+	<!-- The Modal -->
+	<div class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+	
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">인증 실패!</h4>
+					<button type="button" class="btn-close closeModal" data-bs-dismiss="modal"></button>
+				</div>
+		
+				<!-- Modal body -->
+				<div class="modal-body">
+					잘못된 비밀번호 입력입니다.
+				</div>
+		
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success closeModal" data-bs-dismiss="modal">닫기</button>
+				</div>
+	
+			</div>
 		</div>
 	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>

@@ -64,4 +64,26 @@ public class MemberServiceImpl implements MemberService {
 		return result;
 	}
 
+
+	@Override
+	public boolean modifyMyInformation(MemberDTO memberDTO) {
+		boolean result = false;
+		if(memberMapper.modifyMyInformation(memberDTO) == 1) {
+			result = true;
+		};
+		
+		return result;
+	}
+
+
+	@Override
+	public boolean deleteMember(String memberId) {
+		boolean result = false;
+		if(memberMapper.deleteMember(memberId) == 1) {
+			result = true;
+		};
+		return result;
+		
+	}
+
 }

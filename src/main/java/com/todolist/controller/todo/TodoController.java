@@ -139,4 +139,18 @@ public class ToDoController {
 		
 		return list;
 	}
+	
+	@PostMapping("/deleteTodo")
+	@ResponseBody
+	public String deleteToDo(String tno) {
+		String result = "fail";
+		
+		
+		if(toDoService.deleteToDo(tno)) {
+			result = "success";
+		};
+		
+		return result;
+		
+	}
 }

@@ -37,6 +37,7 @@
 		
 		// pwd 정규식 검사
 		$("#memberPwd1").keyup(function(){
+			$("#pwdRegValid").val("");
 			$("#pwdValid").val("");
 
 			let tmpPwd = $("#memberPwd1").val();
@@ -47,6 +48,7 @@
 				outputError("비밀번호는 8~20자리 영문과 숫자, 특수문자의 조합으로 해주세요", this, "red");
 			} else {
 				outputError("사용가능한 비밀번호입니다.", this, "green");
+				$("#pwdRegValid").val("checked");
 				isEqualPwd();
 			}
 
@@ -407,7 +409,7 @@
 
 	function pwdValid(){
 		let result = false;
-		if($("#pwdValid").val() == "checked"){
+		if($("#pwdValid").val() == "checked" && $("#pwdRegValid").val() == "checked"){
 			result = true;
 		}
 		return result;
@@ -459,6 +461,7 @@
 			    <div class="mb-3">
 			      <label for="memberPwd1">비밀번호 : </label><span></span>
 			      <input type="password" class="form-control" id="memberPwd1" placeholder="비밀번호를 입력하세요" name="memberPwd">
+				  <input type="hidden" id="pwdRegValid"/>
 			    </div>
 		    	<div class="mb-3">
 			      <label for="memberPwd2">비밀번호 확인 : </label><span></span>

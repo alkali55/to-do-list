@@ -26,4 +26,14 @@
   	<select id="emailDupCheck" resultType="int">
   		select count(*) from jis_member where email = #{tmpEmail}
   	</select>
+  	
+  	<update id="modifyMyInformation">
+  		update jis_member set email = #{email}, memberName = #{memberName}
+  		<if test="memberPwd != ''">, memberPwd = sha1(md5(#{memberPwd}))</if>
+  		where memberId = #{memberId}
+  	</update>
+  	
+  	<delete id="deleteMember">
+  		delete from jis_member where memberId = #{memberId}
+  	</delete>
 </mapper>

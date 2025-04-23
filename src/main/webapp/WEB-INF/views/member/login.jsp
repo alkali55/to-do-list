@@ -11,12 +11,17 @@
 
 	$(function(){
 		if(getParameter("signup") == "success"){
-			alert("회원가입 성공!");
+			$("#myModal").show();
 		}
 
 		if(getParameter("login") == "fail"){
-			alert("아이디나 비밀번호가 다릅니다");
+			$("#myModal2").show();
 		}
+
+		$(".closeModal").click(function(){
+			$("#myModal").hide();
+			$("#myModal2").hide();
+		})
 	})
 
 	function getParameter(queryName){
@@ -60,6 +65,56 @@
 			    <button type="submit" class="btn btn-primary">로그인</button>
 			    <button type="reset" class="btn btn-secondary">취소</button>
 			  </form>
+		</div>
+	</div>
+
+	<!-- The Modal -->
+	<div class="modal" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+	
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">회원가입 성공!</h4>
+					<button type="button" class="btn-close closeModal" data-bs-dismiss="modal"></button>
+				</div>
+		
+				<!-- Modal body -->
+				<div class="modal-body">
+					로그인을 하고 ToDoList를 이용해보세요!
+				</div>
+		
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success closeModal" data-bs-dismiss="modal">닫기</button>
+				</div>
+	
+			</div>
+		</div>
+	</div>
+
+	<!-- The Modal2 -->
+	<div class="modal" id="myModal2">
+		<div class="modal-dialog">
+			<div class="modal-content">
+	
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">로그인 실패!</h4>
+					<button type="button" class="btn-close closeModal" data-bs-dismiss="modal"></button>
+				</div>
+		
+				<!-- Modal body -->
+				<div class="modal-body">
+					아이디나 비밀번호가 올바르지 않습니다.
+				</div>
+		
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success closeModal" data-bs-dismiss="modal">닫기</button>
+				</div>
+	
+			</div>
 		</div>
 	</div>
 	<jsp:include page="../footer.jsp"></jsp:include>

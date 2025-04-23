@@ -20,5 +20,7 @@ public interface ToDoMapper {
 	List<ToDoVO> selectToDoDueTomorrow();
 
 	List<ToDoVO> selectNotFinishedList(String memberId);
+
+	int deleteToDo(String tno);
 	
 }

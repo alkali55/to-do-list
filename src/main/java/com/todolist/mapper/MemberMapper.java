@@ -17,4 +17,8 @@ public interface MemberMapper {
 	String selectEmailByMemberId(String memberId);
 
 	int emailDupCheck(String tmpEmail);
+
+	int modifyMyInformation(MemberDTO memberDTO);
+
+	int deleteMember(String memberId);
 }

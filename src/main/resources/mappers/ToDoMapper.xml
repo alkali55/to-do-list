@@ -26,4 +26,8 @@
 	<select id="selectNotFinishedList" resultType="ToDoVO">
 		select * from jis_todolist where writer = #{memberId} and finished = false order by dueDate
 	</select>
+	
+	<delete id="deleteToDo">
+		delete from jis_todolist where tno = #{tno}
+	</delete>
 </mapper>
